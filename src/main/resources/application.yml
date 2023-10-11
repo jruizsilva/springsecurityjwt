@@ -1,0 +1,42 @@
+spring:
+  profiles:
+    active: dev
+  main:
+    banner-mode: 'off'
+  output:
+    ansi:
+      enabled: always
+server:
+  servlet:
+    context-path: /api
+jwt:
+  secret:
+    key: 684e99cc1aca20604ebf14ae6b4a9c008a01d2757d2076cadb609a094523cb21
+  time:
+    expiration: 86400000
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+  datasource:
+    password: admin
+    url: jdbc:postgresql://localhost:5432/security_db
+    username: postgres
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+---
+spring:
+  config:
+    activate:
+      on-profile: qa
+  datasource:
+    password: admin
+    url: jdbc:postgresql://localhost:5432/security_db
+    username: postgres
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
