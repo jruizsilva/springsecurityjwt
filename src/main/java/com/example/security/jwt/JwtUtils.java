@@ -16,9 +16,9 @@ import java.util.function.Function;
 @Component
 @Slf4j
 public class JwtUtils {
-    @Value("${jwt.secret.key")
+    @Value("${jwt.secret.key}")
     private String secretKey;
-    @Value("${jwt.time.expiration")
+    @Value("${jwt.time.expiration}")
     private String timeExpiration;
 
     /*Generar token de acceso*/
@@ -27,14 +27,15 @@ public class JwtUtils {
                    .setSubject(username)
                    .setIssuedAt(new Date(System.currentTimeMillis()))
                    .setExpiration(new Date(System.currentTimeMillis() + Long.parseLong(timeExpiration)))
-                   .signWith(getSignatureKey(), SignatureAlgorithm.HS256)
+                   .signWith(getSignatureKey(),
+                             SignatureAlgorithm.HS256)
                    .compact();
     }
 
     /*Validar token de acceso*/
     public boolean isTokenValid(String token) {
         try {
-            Jwts.parser()
+            Jwts.parserBuilder()
                 .setSigningKey(getSignatureKey())
                 .build()
                 .parseClaimsJws(token)
@@ -55,7 +56,8 @@ public class JwtUtils {
 
     /*Obtener username del token*/
     public String getUsernameFromToken(String token) {
-        return getClaim(token, Claims::getSubject);
+        return getClaim(token,
+                        Claims::getSubject);
     }
 
     /*Obtener un solo claim del token*/
@@ -67,7 +69,7 @@ public class JwtUtils {
 
     /*Obtener todos los claims del token*/
     public Claims extractAllClaims(String token) {
-        return Jwts.parser()
+        return Jwts.parserBuilder()
                    .setSigningKey(getSignatureKey())
                    .build()
                    .parseClaimsJws(token)
