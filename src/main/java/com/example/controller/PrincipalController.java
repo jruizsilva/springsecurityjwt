@@ -61,8 +61,9 @@ public class PrincipalController {
     }
 
     @GetMapping("/findAll")
-    public ResponseEntity<?> findAll() {
+    public ResponseEntity<List<UserEntity>> findAll() {
         List<UserEntity> users = userRepository.findAll();
-        return ResponseEntity.ok(users);
+        return ResponseEntity.ok()
+                             .body(users);
     }
 }
